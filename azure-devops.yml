@@ -34,12 +34,12 @@ stages:
             displayName: 'print patch'
             inputs:
               targetType: 'inline'
-              script: echo $(group) --- $(minor) --- $(patch) --- $(release) --- $(Build.Reason)"
+              script: echo $(group) --- $(minor) --- $(patch) --- $(rev:.r) --- $(Build.Reason)"
           - task: Bash@3
             displayName: 'Update patch'
             inputs:
               targetType: 'inline'
-              script: echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)$(release)"
+              script: echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)$(rev:.r)"
   - stage:
     displayName: Build
     jobs:  
