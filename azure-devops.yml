@@ -41,4 +41,3 @@ stages:
       displayName: Build
       steps:
       - script: echo Hello, world!
-      name: 'Run_a_one_line_script'
