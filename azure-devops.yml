@@ -20,7 +20,6 @@ stages:
     displayName: PatchVersion
     jobs:
       - job:
-        checkout: none
         displayName: Compute Version
         pool:
           vmImage: ubuntu-latest
