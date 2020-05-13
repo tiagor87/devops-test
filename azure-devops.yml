@@ -36,24 +36,6 @@ stages:
               targetType: 'inline'
               script: echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)$(release)"
   - stage:
-    displayName: Versioning
-    jobs:
-      - job:
-        displayName: Compute Version
-        pool:
-          vmImage: ubuntu-latest
-          demands:
-            - java
-        variables:
-            Version_Patch: $[counter(variables['Build.Reason'], 1)]
-        steps:
-          - task: Bash@3
-            displayName: 'Update version'
-            inputs:
-              targetType: 'inline'
-              script: echo "##vso[build.updatebuildnumber]$(Version_Major).$(Version_Minor).$(Version_Patch)"
-            condition: ne(variables['Build.Reason'], 'PullRequest')
-  - stage:
     displayName: Build
     jobs:  
     - job:
