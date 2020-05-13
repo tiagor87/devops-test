@@ -1,6 +1,6 @@
 variables:
   major: 0
-  minor: $[counter(variables['Build.Reason']-contains(variables['Build.Reason'], 'feature'), 0)]
+  minor: $[counter($[join(variables['Build.Reason'], '-', $[contains(variables['Build.Reason'], 'feature')])], 0)]
   patch: $[counter(variables['Build.Reason'], 0)]
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
     release: '$(rev:.r)'
