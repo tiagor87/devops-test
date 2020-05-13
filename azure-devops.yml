@@ -1,12 +1,12 @@
 variables:
   major: 0
-  group: $(Build.Reason)${{contains(variables['Build.Reason'], 'feature')}}
+  group: $(Build.Reason)${{contains(variables['Build.SourceBranchName'], 'feature')}}
   minor: $[counter(variables['group'], 0)]
   patch: $[counter(variables['Build.Reason'], 0)]
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
-    release: '$(rev:.r)'
+    release: $(rev:.r)
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
-    release: '$(rev:.r)-beta'
+    release: $(rev:.r)-beta
 
 trigger:
   batch: true
