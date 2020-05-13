@@ -31,6 +31,11 @@ stages:
             - java
         steps:
           - task: Bash@3
+            displayName: 'print patch'
+            inputs:
+              targetType: 'inline'
+              script: echo $(group) --- $(minor) --- $(patch) --- $(release)"
+          - task: Bash@3
             displayName: 'Update patch'
             inputs:
               targetType: 'inline'
