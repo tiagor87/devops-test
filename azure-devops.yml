@@ -1,0 +1,48 @@
+name: 
+
+variables:
+  Version_Major: 0
+  Version_Minor: 0
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - 'master'
+pr:
+  autoCancel: false
+  branches:
+    include:
+      - 'master'
+
+stages:
+  - stage:
+    displayName: Versioning
+    jobs:
+      - job:
+        displayName: Compute Version
+        pool:
+          vmImage: ubuntu-latest
+          demands:
+            - java
+        variables:
+            Version_Patch: $[counter(variables['Build.Reason'], 0)]
+        steps:
+          - task: Bash@3
+            displayName: 'Update version'
+            inputs:
+              targetType: 'inline'
+              script: echo "##vso[build.updatebuildnumber]$(Version_Major).$(Version_Minor).$(Version_Patch)"
+            condition: condition: ne(variables['Build.Reason'], 'PullRequest')
+  - stage:
+    displayName: Build
+    jobs:  
+    - job:
+        displayName: Build
+        steps:
+        - script: echo Hello, world!
+        name: 'Run_a_one_line_script'
+        - script: |
+            echo Add other tasks to build, test, and deploy your project.
+            echo See https://aka.ms/yaml
+        name: 'Run_a_multi_line_cript'
