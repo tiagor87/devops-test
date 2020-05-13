@@ -1,5 +1,3 @@
-name: Updated during the process
-
 variables:
   Version_Major: 0
   Version_Minor: 0
@@ -26,7 +24,7 @@ stages:
           demands:
             - java
         variables:
-            Version_Patch: $[counter(variables['Build.Reason'], 0)]
+            Version_Patch: $[counter(variables['Build.Reason'], 1)]
         steps:
           - task: Bash@3
             displayName: 'Update version'
