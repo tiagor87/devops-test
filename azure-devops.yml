@@ -34,7 +34,7 @@ stages:
             displayName: 'print patch'
             inputs:
               targetType: 'inline'
-              script: echo $(group) --- $(minor) --- $(patch) --- $(release)"
+              script: echo $(group) --- $(minor) --- $(patch) --- $(release) --- $(Build.Reason)"
           - task: Bash@3
             displayName: 'Update patch'
             inputs:
