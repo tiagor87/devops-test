@@ -20,6 +20,7 @@ stages:
     displayName: PatchVersion
     jobs:
       - job:
+        checkout: none
         displayName: Compute Version
         pool:
           vmImage: ubuntu-latest
@@ -27,16 +28,14 @@ stages:
             - java
         steps:
           - task: Bash@3
-            checkout: none
             displayName: 'Set patch'
-            conditional: eq(variables['Build.SourceBranchName'], 'master')
+            condition: eq(variables['Build.SourceBranchName'], 'master')
             inputs:
               targetType: 'inline'
               script: echo "##vso[t.setvariable variable=patch]$[counter(variables['Build.SourceBranchName'])]"
           - task: Bash@3
-            checkout: none
             displayName: 'Set sufix'
-            conditional: ne(variables['Build.SourceBranchName'], 'master')
+            condition: ne(variables['Build.SourceBranchName'], 'master')
             inputs:
               targetType: 'inline'
               script: echo "##vso[t.setvariable variable=sufix]'-rc'"
