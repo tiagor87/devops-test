@@ -38,4 +38,4 @@ stages:
     - job:
       displayName: Build
       steps:
-      - script: echo Hello, world!
+      - script: echo Hello, world 2!
