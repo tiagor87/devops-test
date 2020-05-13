@@ -38,7 +38,7 @@ stages:
     displayName: Build
     jobs:  
     - job:
-        displayName: Build
-        steps:
-        - script: echo Hello, world!
-        name: 'Run_a_one_line_script'
+      displayName: Build
+      steps:
+      - script: echo Hello, world!
+      name: 'Run_a_one_line_script'
