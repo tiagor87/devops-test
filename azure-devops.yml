@@ -29,19 +29,15 @@ stages:
           - task: Bash@3
             displayName: 'Set patch'
             condition: eq(variables['Build.SourceBranchName'], 'master')
-            variables:
-              computed_patch: $[counter(variables['Build.SourceBranchName'])]
             inputs:
               targetType: 'inline'
-              script: echo "##vso[task.setvariable variable=patch]$(computed_patch)"
+              script: echo "##vso[task.setvariable variable=patch]$[counter(variables['Build.SourceBranchName'])]"
           - task: Bash@3
             displayName: 'Set sufix'
             condition: ne(variables['Build.SourceBranchName'], 'master')
-            variables:
-              computed_sufix: '-rc'
             inputs:
               targetType: 'inline'
-              script: echo "##vso[task.setvariable variable=sufix]$(computed_sufix)"
+              script: echo "##vso[task.setvariable variable=sufix]$(computed_sufix)-rc"
 
           - task: Bash@3
             displayName: 'Set build number'
