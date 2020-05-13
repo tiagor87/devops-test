@@ -2,6 +2,7 @@ variables:
   major: 0
   minor: 0
   patch: 0
+  revision: $(Rev:.r)
   sufix: ''
 
 trigger:
@@ -43,7 +44,7 @@ stages:
             displayName: 'Set build number'
             inputs:
               targetType: 'inline'
-              script: echo "##vso[Build.UpdateBuildNumber]$(major).$(minor).$(patch)$(rev:.r)$(sufix)"
+              script: echo "##vso[Build.UpdateBuildNumber]$(major).$(minor).$(patch)$(revision)$(sufix)"
   - stage:
     displayName: Build
     jobs:  
