@@ -1,6 +1,11 @@
 variables:
-  Version_Major: 0
-  Version_Minor: 0
+  major: 0
+  minor: $[counter(variables['Build.Reason']-contains(variables['Build.Reason'], 'feature'), 0)]
+  patch: $[counter(variables['Build.Reason'], 0)]
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    release: '$(rev:.r)'
+  ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
+    release: '$(rev:.r)-beta'
 
 trigger:
   batch: true
@@ -14,6 +19,21 @@ pr:
       - 'master'
 
 stages:
+  - stage:
+    displayName: Versioning
+    jobs:
+      - job:
+        displayName: Compute Version
+        pool:
+          vmImage: ubuntu-latest
+          demands:
+            - java
+        steps:
+          - task: Bash@3
+            displayName: 'Update patch'
+            inputs:
+              targetType: 'inline'
+              script: echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)$(release)"
   - stage:
     displayName: Versioning
     jobs:
