@@ -33,7 +33,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: echo "##vso[build.updatebuildnumber]$(Version_Major).$(Version_Minor).$(Version_Patch)"
-            condition: condition: ne(variables['Build.Reason'], 'PullRequest')
+            condition: ne(variables['Build.Reason'], 'PullRequest')
   - stage:
     displayName: Build
     jobs:  
