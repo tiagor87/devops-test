@@ -42,7 +42,3 @@ stages:
         steps:
         - script: echo Hello, world!
         name: 'Run_a_one_line_script'
-        - script: |
-            echo Add other tasks to build, test, and deploy your project.
-            echo See https://aka.ms/yaml
-        name: 'Run_a_multi_line_cript'
