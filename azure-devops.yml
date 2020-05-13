@@ -2,8 +2,7 @@ variables:
   major: 0
   minor: 0
   patch: 0
-  ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-    sufix: $(rev:.r)-beta
+  sufix: ''
 
 trigger:
   batch: true
