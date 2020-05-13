@@ -2,7 +2,7 @@ variables:
   major: 0
   minor: 0
   patch: 0
-  revision: $(Rev:.r)
+  revision: 0
   sufix: ''
 
 trigger:
@@ -33,12 +33,19 @@ stages:
             inputs:
               targetType: 'inline'
               script: echo "##vso[Task.SetVariable variable=patch]$[counter(variables['Build.SourceBranchName'])]"
+
           - task: Bash@3
             displayName: 'Set sufix'
             condition: ne(variables['Build.SourceBranchName'], 'master')
             inputs:
               targetType: 'inline'
               script: echo "##vso[Task.SetVariable variable=sufix]-rc"
+
+          - task: Bash@3
+            displayName: 'Set release'            
+            inputs:
+              targetType: 'inline'
+              script: echo "##vso[Task.SetVariable variable=sufix]$[counter(format('{0}{1}{2}', variables.major, variables.minor, variables['Build.BranchSourceName']))]"
 
           - task: Bash@3
             displayName: 'Set build number'
