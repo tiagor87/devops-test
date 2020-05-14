@@ -1,12 +1,10 @@
+name: $(major).$(minor).$(patch)
+
 variables:
   major: 0
   minor: 0
-  ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    sufix: -rc
-  version: ${{ format('{0}.{1}.{2}{3}', variables['major'], variables['minor'], variables['patch'], variables['sufix']) }}
-  patch: ${{ counter(format('{0}.{1}', variables['major'], variables['minor']))}}
+  patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']))]
   
-
 trigger:
   batch: true
   branches:
@@ -30,13 +28,7 @@ stages:
             - java
         steps:
           - task: Bash@3
-            displayName: 'Set patch'
             condition: eq(variables['Build.SourceBranchName'], 'master')
-            inputs:
-              targetType: 'inline'
-              script: echo "##vso[Task.SetVariable variable=version]$[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]"
-
-          - task: Bash@3
             displayName: 'Set build number'
             inputs:
               targetType: 'inline'
