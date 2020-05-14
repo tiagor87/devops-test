@@ -5,9 +5,11 @@ variables:
   minor: 0
   patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 1)]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    version: $[format('pr-{0}.{1}', variables['System.PullRequest.PullRequestNumber'], variables['patch'])]
-  ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
+    version: $[format('pr-{0}.{1}.{2}.{3}', variables['System.PullRequest.PullRequestNumber'], variables['major'], variables['minor'], variables['patch'])]
+  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'master'))}}:
     version: $[format('v{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
+  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), ne(variables['Build.SourceBranchName'], 'master'))}}:
+    version: $[format('manual-v{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
   
 trigger:
   batch: true
