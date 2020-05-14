@@ -29,12 +29,12 @@ stages:
         steps:
           - task: Bash@3
             condition: eq(variables['Build.SourceBranchName'], 'master')
-            variables:
-              patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']))]
             displayName: 'Set build number'
             inputs:
               targetType: 'inline'
-              script: echo "##vso[Build.UpdateBuildNumber]$(version)"
+              script: |
+                echo "##vso[Task.SetVariable variable=patch]$[counter(format('{0}.{1}', variables['major'], variables['minor']))]"
+                echo "##vso[Build.UpdateBuildNumber]$(version)"
   - stage:
     displayName: Build
     jobs:  
