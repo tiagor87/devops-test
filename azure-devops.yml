@@ -26,4 +26,4 @@ stages:
     - job:
       displayName: Build
       steps:
-      - script: echo Hello, world 2!
+      - script: echo Hello, world 3!
