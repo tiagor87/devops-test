@@ -3,7 +3,12 @@ name: $(major).$(minor).$(patch)
 variables:
   major: 0
   minor: 0
-  patch: 0
+  ${{if and(eq(variables['Build.Reason'], 'PullRequest'), contains(variables['Build.SourceBranchName'], 'feature')) }}:
+    minor: ${{ variables['minor'] + 1 }}
+  ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
+    patch: '0-rc'
+  ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
+    patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']))]
   
 trigger:
   batch: true
@@ -33,7 +38,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                echo "##vso[Task.SetVariable variable=patch]$[counter(format('{0}.{1}', variables['major'], variables['minor']))]"
+                echo "##vso[Task.SetVariable variable=path]$(version)"
                 echo "##vso[Build.UpdateBuildNumber]$(version)"
   - stage:
     displayName: Build
