@@ -4,7 +4,7 @@ variables:
   major: 0
   minor: 0
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    patch: $[counter(format('{0}.{1}-{2}-rc', variables['major'], variables['minor'], variables['Build.Reason']), 100)]
+    patch: $[format('{0}-rc', counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.Reason']), 100))]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'master'))}}:
     patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']), 1)]
   
