@@ -1,7 +1,13 @@
-variables:
-  Version_Major: 0
-  Version_Minor: 0
+name: $(major).$(minor).$(patch)
 
+variables:
+  major: 0
+  minor: 0
+  ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
+    patch: '0-rc'
+  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'master'))}}:
+    patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']))]
+  
 trigger:
   batch: true
   branches:
@@ -15,27 +21,9 @@ pr:
 
 stages:
   - stage:
-    displayName: Versioning
-    jobs:
-      - job:
-        displayName: Compute Version
-        pool:
-          vmImage: ubuntu-latest
-          demands:
-            - java
-        variables:
-            Version_Patch: $[counter(variables['Build.Reason'], 1)]
-        steps:
-          - task: Bash@3
-            displayName: 'Update version'
-            inputs:
-              targetType: 'inline'
-              script: echo "##vso[build.updatebuildnumber]$(Version_Major).$(Version_Minor).$(Version_Patch)"
-            condition: ne(variables['Build.Reason'], 'PullRequest')
-  - stage:
     displayName: Build
     jobs:  
     - job:
       displayName: Build
       steps:
-      - script: echo Hello, world!
+      - script: echo Hello, world 2!
