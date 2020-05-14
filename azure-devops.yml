@@ -1,12 +1,13 @@
-${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-name: pr-$(System.PullRequest.PullRequestNumber).$(patch)
-${{if ne(variables['Build.Reason'], 'PullRequest')}}:
-name: $(major).$(minor).$(patch)
+name: $(version)
 
 variables:
   major: 0
   minor: 0
-  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 1)]  
+  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 1)]
+  ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
+    version: pr-$(System.PullRequest.PullRequestNumber).$(patch)
+  ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
+    version: $(major).$(minor).$(patch)
   
 trigger:
   batch: true
