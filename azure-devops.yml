@@ -2,7 +2,7 @@ variables:
   major: 0
   minor: 0
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}
-    sufix: '-rc'
+    sufix: -rc
   version: $[format('{0}.{1}.{2}{3}', variables.major, variables.minor, variables.patch, variables.sufix)]
   patch: $[counter(format('{0}.{1}', variables.major, variables.minor))]
   
