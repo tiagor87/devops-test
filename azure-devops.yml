@@ -1,9 +1,11 @@
 variables:
   major: 0
   minor: 0
-  patch: 0
-  revision: 0
-  sufix: ''
+  ${{if eq(variables['Build.Reason'], 'PullRequest')}}
+    sufix: '-rc'
+  version: $[format('{0}.{1}.{2}{3}', variables.major, variables.minor, variables.patch, variables.sufix)]
+  patch: $[counter(format('{0}.{1}', variables.major, variables.minor))]
+  
 
 trigger:
   batch: true
@@ -32,26 +34,13 @@ stages:
             condition: eq(variables['Build.SourceBranchName'], 'master')
             inputs:
               targetType: 'inline'
-              script: echo "##vso[Task.SetVariable variable=patch]$[counter(variables['Build.SourceBranchName'])]"
-
-          - task: Bash@3
-            displayName: 'Set sufix'
-            condition: ne(variables['Build.SourceBranchName'], 'master')
-            inputs:
-              targetType: 'inline'
-              script: echo "##vso[Task.SetVariable variable=sufix]-rc"
-
-          - task: Bash@3
-            displayName: 'Set release'            
-            inputs:
-              targetType: 'inline'
-              script: echo "##vso[Task.SetVariable variable=sufix]$[counter(format('{0}{1}{2}', variables.major, variables.minor, variables['Build.BranchSourceName']))]"
+              script: echo "##vso[Task.SetVariable variable=version]$[format('{0}.{1}.{2}', variables.major, variables.minor, variables.patch)]"
 
           - task: Bash@3
             displayName: 'Set build number'
             inputs:
               targetType: 'inline'
-              script: echo "##vso[Build.UpdateBuildNumber]$(major).$(minor).$(patch)$(revision)$(sufix)"
+              script: echo "##vso[Build.UpdateBuildNumber]$(version)"
   - stage:
     displayName: Build
     jobs:  
