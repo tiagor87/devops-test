@@ -3,8 +3,6 @@ name: $(major).$(minor).$(patch)
 variables:
   major: 0
   minor: 0
-  ${{if and(eq(variables['Build.Reason'], 'PullRequest'), contains(variables['Build.SourceBranchName'], 'feature')) }}:
-    minor: ${{ variables['minor'] + 1 }}
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
     patch: '0-rc'
   ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
