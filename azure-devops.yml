@@ -3,8 +3,8 @@ variables:
   minor: 0
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
     sufix: -rc
-  version: $[format('{0}.{1}.{2}{3}', variables['major'], variables['minor'], variables['patch'], variables['sufix'])]
-  patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']))]
+  version: ${{ format('{0}.{1}.{2}{3}', variables['major'], variables['minor'], variables['patch'], variables['sufix']) }}
+  patch: ${{ counter(format('{0}.{1}', variables['major'], variables['minor']))}}
   
 
 trigger:
