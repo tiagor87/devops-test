@@ -29,4 +29,5 @@ stages:
     - job:
       displayName: Build
       steps:
+      - checkout: none
       - script: echo Hello, world $(Build.SourceBranch)!!
