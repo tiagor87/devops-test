@@ -31,4 +31,4 @@ stages:
     - job:
       displayName: Build
       steps:
-      - script: echo Hello, world $(variables['Build.SourceBranchName'])!
+      - script: echo Hello, world $(Build.SourceBranchName)!
