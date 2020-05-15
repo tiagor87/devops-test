@@ -3,13 +3,13 @@ name: $(prefix)$(version)
 variables:
   major: 0
   minor: 0
-  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 0)]
+  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranch']), 0)]
   version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
     prefix: $[format('pr-{0}_v', variables['System.PullRequest.PullRequestNumber'])]
-  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'master'))}}:
+  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
     prefix: 'v'
-  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), ne(variables['Build.SourceBranchName'], 'master'))}}:
+  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), ne(variables['Build.SourceBranchName'], 'refs/heads/master'))}}:
     prefix: 'manual_v'
   
 
@@ -31,4 +31,4 @@ stages:
     - job:
       displayName: Build
       steps:
-      - script: echo Hello, world 4!
+      - script: echo Hello, world $(Build.SourceBranch)!!
