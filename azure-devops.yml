@@ -24,10 +24,13 @@ pr:
 
 stages:
   - stage:
-    displayName: Build
     jobs:  
-    - job:
-      displayName: Build
+    - job: Build
+      steps:
+      - checkout: none
+      - script: echo Hello, world $(Build.SourceBranch)!!
+    - job: Push
+      dependsOn: Build
       steps:
       - checkout: none
       - script: echo Hello, world $(Build.SourceBranch)!!
