@@ -1,10 +1,10 @@
-name: $(version)$(sufix)
+name: $(version)
 
 variables:
   major: 0
-  minor: 0
+  minor: 3
   patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranch']), 0)]
-  version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
+  version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'], variables['sufix'])]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
     sufix: $[format('-pr{0}', variables['System.PullRequest.PullRequestNumber'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
