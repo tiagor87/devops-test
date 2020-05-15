@@ -1,4 +1,4 @@
-name: $(prefix)$(version)
+name: $(version)$(sufix)
 
 variables:
   major: 0
@@ -6,9 +6,9 @@ variables:
   patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranch']), 0)]
   version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    prefix: $[format('pr-{0}_v', variables['System.PullRequest.PullRequestNumber'])]
+    sufix: $[format('-pr{0}', variables['System.PullRequest.PullRequestNumber'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
-    prefix: 'v'
+    sufix: ''
   
 
 trigger:
