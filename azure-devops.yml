@@ -1,16 +1,19 @@
-name: $(version)
+name: $(prefix)$(version)
 
 variables:
   major: 0
   minor: 0
   patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranchName']), 0)]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    version: $[format('pr-{0}_v{1}.{2}.{3}', variables['System.PullRequest.PullRequestNumber'], variables['major'], variables['minor'], variables['patch'])]
+    prefix: $[format('pr-{0}_v', variables['System.PullRequest.PullRequestNumber'])]
+    version: $[format('{1}.{2}.{3}', variables['major'], variables['minor'], variables['patch'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'master'))}}:
-    version: $[format('v{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
+    prefix: 'v'
+    version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), ne(variables['Build.SourceBranchName'], 'master'))}}:
-    version: $[format('manual_v{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
-  
+    prefix: 'manual_v'
+    version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
+
 trigger:
   batch: true
   branches:
