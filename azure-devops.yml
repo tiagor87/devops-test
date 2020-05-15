@@ -9,8 +9,6 @@ variables:
     prefix: $[format('pr-{0}_v', variables['System.PullRequest.PullRequestNumber'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
     prefix: 'v'
-  ${{if and(ne(variables['Build.Reason'], 'PullRequest'), ne(variables['Build.SourceBranchName'], 'refs/heads/master'))}}:
-    prefix: 'manual_v'
   
 
 trigger:
