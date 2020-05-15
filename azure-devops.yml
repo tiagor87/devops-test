@@ -8,7 +8,7 @@ variables:
     sufix: $[format('-pr{0}', variables['System.PullRequest.PullRequestNumber'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
     sufix: ''
-  version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'], variables['sufix'])]
+  version: $[format('{0}.{1}.{2}{3}', variables['major'], variables['minor'], variables['patch'], variables['sufix'])]
   
 
 trigger:
