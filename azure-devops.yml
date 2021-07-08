@@ -1,14 +1,13 @@
-name: $(prefix)$(version)
+name: $(version)
 
 variables:
-  major: 0
-  minor: 0
-  patch: $[counter(format('{0}.{1}-{2}', variables['major'], variables['minor'], variables['Build.SourceBranch']), 0)]
-  version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], variables['patch'])]
+  version.major: 0
+  version.minor: 3
+  patch: $[counter(format('{0}.{1}-{2}', variables['version.major'], variables['version.minor'], variables['Build.SourceBranch']), 0)]
   ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-    prefix: $[format('pr-{0}_v', variables['System.PullRequest.PullRequestNumber'])]
+    version: $[format('pr-{0}.{1}', variables['System.PullRequest.PullRequestNumber'], variables['patch'])]
   ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))}}:
-    prefix: 'v'
+    version: $[format('{0}.{1}.{2}', variables['version.major'], variables['version.minor'], variables['patch'])]
   
 
 trigger:
@@ -24,9 +23,13 @@ pr:
 
 stages:
   - stage:
-    displayName: Build
     jobs:  
-    - job:
-      displayName: Build
+    - job: Build, Test
       steps:
+      - checkout: none
+      - script: echo Hello, world $(Build.SourceBranch)!!
+    - job: Push
+      dependsOn: Build, Test
+      steps:
+      - checkout: none
       - script: echo Hello, world $(Build.SourceBranch)!!
